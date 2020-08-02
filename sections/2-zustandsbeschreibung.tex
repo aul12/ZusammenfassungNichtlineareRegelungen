@@ -1,0 +1,75 @@
+\chapter{Nichtlineare Zustandsdarstellung}
+\section{Zustands-DGL}
+Ein AWP
+\begin{equation}
+    \dot{x} = f(x, u)
+\end{equation}
+mit $t>0, x(0) = x_0$ und dem Zustand $x \in \mathbb{R}^n$ sowie dem Eingang 
+$u \in \mathbb{R}^p$ mit $1 \leq p \leq n$ ist die Zustandsdarstellung eines
+(nichtlinearen) Systems falls es für einen gegebenen Anfangswert $x_0 \in \mathbb{R}^n$
+wohlgestellt (nach Hadamard) ist.
+
+\section{Wohlgestelltheit eines AWP (Hadamard)}
+Ein AWP (wie oben definiert) ist wohlgestellt, genau dann wenn:
+\begin{itemize}
+    \item Lösung exisitiert und ist eindeutig
+    \item Lösung des AWP hängt stetig vom Anfangswert ab
+\end{itemize}
+
+Oftmals kann direkt aus der Modellbildung gefolgt werden, dass ein AWP wohlgestellt
+ist (physikalisch sinnvolle Beschreibung).
+
+\section{Existenz- und Eindeutigkeit der Lösung (Picard-Lindelöf)}
+Sei $f(x, u(t))$ (wie oben) stückweise stetig in $t$ und genüge der Lipschitz-Bedingung:
+\begin{equation}
+    \norm{f(x, u(t)) - f(\xi, u(t))} \leq L \norm{x - \xi}
+\end{equation}
+für ein $L \in \mathbb{R}$ und alle $x, \xi \in U_{x_0} = \{x \in \mathbb{R}^n | \norm{x - x_0} \leq r\}$
+sowie $t \in I_t = [0, \tau]$.
+Dann exisitiert ein $\delta$ mit $0 < \delta \leq \tau$, so dass das AWP (wie oben)
+genau eine Lösung auf $[0, \delta]$ besitzt.
+
+\section{Ruhelage}
+Die konstante Lösung $x(t) = x_R$ heißt Ruhelage des NL-Systems
+\begin{equation}
+    \dot{x} = f(x, u)
+\end{equation}
+falls für $u(t)=u_R$ gilt:
+\begin{equation}
+    f(x_R, u_R) = 0
+\end{equation}
+
+\subsection{Ruhelage linearer Systeme}
+Lineare Systeme können keine, eine oder unendlich viele Ruhelagen besitzen, jedoch nicht 
+endlich viele.
+
+\subsection{Transformation in Ursprung}
+Jede Ruhelage kann in den Ursprung transformiert werden, so dass gilt $x_R = 0$.
+
+\section{Stabilität von Ruhelagen}
+\subsection{Stabilität}
+Ein nichtlineares System mit der Ruhelage $x_R = 0$, heißt stabil, falls gilt:
+\begin{equation}
+    \forall \varepsilon > 0\ \exists \delta(\varepsilon): \left( \norm{x_0} < \delta(\varepsilon) \Rightarrow \norm{x(t)} < \varepsilon, \forall t \geq 0\right)
+\end{equation}
+
+\subsection{Asymptotische Stabilität}
+Eine Ruhelage $x_R$ heißt asymptotisch stabil, falls die Ruhelage stabil ist und gilt:
+\begin{equation}
+    \exists \gamma > 0: \norm{x(0)} < \gamma \Rightarrow \lim_{t \to \infty} x(t) = x_R
+\end{equation}
+
+\subsection{Einzugsbereich}
+Die Menge aller Punkte aus denen Trajektorien $x(t), t \geq 0$ gegen $x_R$ streben heißt
+Einzugsbereich der Ruhelage $x_R$.
+
+Falls der Einzugsbereich der gesamte Zustandsraum ist, so heißt die Ruhelage globale Ruhelage.
+
+\subsection{Exponentielle Stabilität}
+Eine Ruhelage $x_R=0$ heißt exponentiell stabil, wenn für zwei Konstanten
+$M \geq 1$ und $c>0$ gilt
+\begin{equation}
+    \norm{x(t)} \leq M \exp(-ct) \norm{x(0)}\ \forall t \geq 0
+\end{equation}
+dabei ist $x(0)$ beliebig mit $\norm{x(0)} < \delta, \delta > 0$.
+
