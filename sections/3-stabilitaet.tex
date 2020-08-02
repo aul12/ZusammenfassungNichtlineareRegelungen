@@ -1,0 +1,54 @@
+\chapter{Stabilitätskriterien für die Ruhelage nichtlinearer Systeme}
+\section{Direke Methode von Lyapunov}
+\subsection{Lyapunov-Testfunktion}
+Eine Funktion $V: \mathbb{R}^n \to \mathbb{R}$ für die in $U(0)$ gilt
+\begin{itemize}
+    \item Stetig Differenzierbar
+    \item $V(0)=0$
+    \item $V(x) > 0\ \forall x \in U(0)\setminus\{0\}$
+\end{itemize}
+heißt Lyapunov Testfunktion.
+
+\subsubsection{Typische Testfunktionen}
+\begin{itemize}
+    \item
+        Quadratische Formen ($V(x) = x^\text{T} P x$, mit $P$ positiv definit 
+        (Test über Eigenwerte oder Sylvester-Kriterium (NW-Determinanten)))
+    \item
+        Funktionen die in $0$ ein (lokales) minimum haben.
+\end{itemize}
+
+\subsection{Direkte Methode von Lyapunov}
+Für ein System mit Ruhelage $x_R=0$ und einer Lyapunov-Testfunktion $V(x)$ gilt:
+\begin{itemize}
+    \item
+        Falls $\dot{V}(0) = 0$ und
+        \begin{equation}
+            \dot{V}(x) = \frac{\partial V(x)}{\partial x} \dot{x}
+                = \frac{\partial V(x)}{\partial x} f(x) \leq 0 
+        \end{equation}
+        für $x \in U(0)$, d.h. $\dot{V}(x)$ ist negativ semidefinit in $U(0)$,
+        dann ist die Ruhelage $x_R=0$ stabil.
+    \item
+        Falls $\dot{V}(0) = 0$ und
+        \begin{equation}
+            \dot{V}(x) = \frac{\partial V(x)}{\partial x} \dot{x}
+                = \frac{\partial V(x)}{\partial x} f(x) < 0 
+        \end{equation}
+        für $x \in U(0)\setminus \{0\}$, d.h. $\dot{V}(x)$ ist negativ definit in $U(0)$,
+        dann ist die Ruhelage $x_R=0$ asymptotisch stabil.
+\end{itemize}
+$V(x)$ wird dann Lyapunovfunktion des Systems genannt.
+
+\subsection{Abschätzung des Einzugsbereichs}
+Sei $f$ ein System mit Ruhelage $x_R=0$ und $V(x)$ eine Lyapunov-Testfunktion. Eine
+Menge $S$ mit $\dot{V}(0) = 0$ und $\dot{V}(x) < 0, x \neq 0$ kann zur Abschätzung des
+Einzugsbereichs genutzt werden:
+
+Sei $B$ ein beschränktes Gebiet in $S$ mit:
+\begin{itemize}
+    \item $x_R \in B$
+    \item $V(x) < c, c>0, x \neq 0$
+    \item Der Rand wird durch $V(x)=c$ gebildet
+\end{itemize}
+dann ist die Ruhelage asymptotisch stabil und $B$ gehört zu ihrem Einzugsbereich.
