@@ -1,0 +1,66 @@
+\chapter{Exakte Ein-/Ausgangslinearisierung}
+\section{Bestimmung des exakt E/A-linearisierenden Stellgesetzes}
+\subsection{Problemstellung}
+Für ein eingangsaffines nichtlineares SISO-System
+\begin{eqnarray}
+    \dot{x} &=& f(x) + g(x) u \\
+    y &=& h(x)
+\end{eqnarray}
+soll eine nichtlineare Zustandsrückführung
+\begin{equation}
+    u = \alpha(x) + \beta(x) + \bar{u}
+\end{equation} 
+bestimmt werden, so dass die Verknüpfung der beiden Systeme EA-Linear ist.
+
+Es wird angenommen, dass $f, g, h$ hinreichend oft stetig differenzierbar sind.
+
+\subsection{Lie-Ableitung}
+Es gilt:
+\begin{equation}
+    L_f^i h(x) = \frac{\partial L_f^{i-1} h(x)}{\partial x} f(x)
+\end{equation}
+außerdem gilt:
+\begin{equation}
+    L_f^0 h(x) = h(x)
+\end{equation}
+
+\subsection{Differenzgrad}
+Die Größe $r$ heißt Differenzgrad der Ausgangsgröße $y=h(x)$ bei $x=x_0$ (Differenzgrad
+kann variieren) wenn gilt:
+\begin{eqnarray}
+    L_g L_f^i h(x) &=& 0\ \text{in } U(x_0), i \in \{0, \ldots r-2\} \\
+    L_g L_f^{r-1} h(x_0) &\neq& 0
+\end{eqnarray}
+
+\subsubsection{Bei linearen Systemen}
+Bei linearen Systemen ist $r$ gleich dem Differenzgrad von Nenner- und Zählerpolynom
+der Übertragungsfunktion.
+
+\subsection{Herleitung}
+Idee: Kompensation der nichtlinearitäten:
+\begin{equation}
+    y^{(r)} = L_f^r h(x) + L_g L_f^{r-1} h(x) u \stackrel{!}{=} \bar{u}
+\end{equation}
+da $L_g L_f^{r-1} h(x) \neq 0$ kann man nach $u$ auflösen:
+\begin{equation} \label{eq:u}
+    u = \frac{1}{L_g L_f^{r-1} h(x)} \left(-L_f^r h(x) + \bar{u} \right)
+      = \alpha(x) + \beta(x) \bar{u}
+\end{equation}
+Vorgabe der linearen Dynamik, z.B. über Polvorgabe ($w$ ist der Regelfehler):
+\begin{equation}
+    y^{(r)} = - \tilde{a}_{r-1} y^{(r-1)} - \cdots - \tilde{a}_1 \dot{y} - \tilde{a}_0 y +
+        \tilde{a}_0 w
+\end{equation}
+außerdem gilt:
+\begin{equation}
+    y^{(i)} = L_f^i h(x)
+\end{equation}
+einsetzten in Gleichung \ref{eq:u} liefert:
+\begin{eqnarray}
+    u &=& \frac{1}{L_g L_f^{r-1} h(x)} \\
+        &&\left(-L_f^r h(x) - \tilde{a}_{r-1} L_f^{r-1} h(x) - \ldots - \tilde{a}_1 L_f h(x) - \tilde{a}_0 h(x) + \tilde{a}_0 w \right) \\
+      &=& \tilde{\alpha}(x) + \tilde{\beta}(x) \bar{u}
+\end{eqnarray}
+
+Für $r<n$ existiert ein nichtbeobachtbares Teilsystem dessen Stabilität untersucht werden
+muss.
