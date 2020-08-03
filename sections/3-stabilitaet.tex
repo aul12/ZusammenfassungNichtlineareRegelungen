@@ -52,3 +52,55 @@ Sei $B$ ein beschränktes Gebiet in $S$ mit:
     \item Der Rand wird durch $V(x)=c$ gebildet
 \end{itemize}
 dann ist die Ruhelage asymptotisch stabil und $B$ gehört zu ihrem Einzugsbereich.
+
+\subsection{Global asymptotisch stabile Ruhelage}
+Sei $f$ ein System mit Ruhelage $x_R=0$, $V(x)$ eine Lyapunov-Funktion im
+\textbf{gesamten Zustandsraum} mit:
+\begin{itemize}
+    \item
+        $\dot{V}(0) = 0$
+    \item
+        $\dot{V}(x) < 0\ \forall x \neq 0$
+\end{itemize}
+darüber hinaus sei $V(x)$ \textbf{radial unbeschränkt}, d.h.
+\begin{equation}
+    \norm{x} \to \infty \Rightarrow V(x) \to \infty 
+\end{equation}
+dann ist $x_R$ global asymptotisch stabil.
+
+\subsection{Exponentielle Stabilität der Ruhelage}
+Sei $f$ ein System mit Ruhelage $x_R=0$, $V(x)$ eine Lyapunov-Funktion in $U(0)$ mit:
+\begin{itemize}
+    \item
+        $\alpha \norm{x}^2 \leq V(x) \leq \beta \norm{x}^2\ \alpha, \beta > 0$
+    \item
+        $\dot{V}(x) < -\gamma \norm{x}^2\ \gamma > 0$
+\end{itemize}
+Dann ist $x_R$ exponentiell stabil mit $c=\frac{\gamma}{2 \beta}$ als Rate der exponentiellen Konvergenz.
+
+\section{Invarianzprinzip von LaSalle (asymptotische Stabilität mit negativ semidefiniter Zeitableitung)}
+Sei $f$ ein System mit Ruhelage $x_R=0$, und $S$ eine Punktmenge die $x_R$ enthält und in
+der eine Lyapunov-Funktion $V(x)$ die Eigenschaften $\dot{V}(0) = 0$ und 
+$\dot{V}(x) \leq 0$ besitzt.
+Sei $B$ eine Teilmenge von $S$ mit $x_R \in B$ und $V(x) < c$ gilt, mit Rand
+$V(x) = c$ mit $c > 0$ (vgl. Einzugsbereich).
+Wenn in $B$ die Punktmenge auf der $\dot{V}(x) = 0$ ist außer $x_R=0$ keine Trajektorien
+des Systems enthält, dann ist $x_R$ asymptotisch stabil und $B$ gehört zum Einzugsbereich.
+
+Ist $V(x)$ radial unbeschränkt und gelten die Aussagen im gesamten Zustandsraum, dann ist
+die Ruhelage global asymptotisch stabil.
+
+\section{Methode der ersten Näherung}
+Sei $f$ ein System mit Ruhelage $x_R=0$ und $f$ stetig differenzierbar in $U(0)$.
+$A$ ist die Jacobi-Matrix von $f$ im Ursprung, also $A = \frac{\partial f}{\partial x}(0)$.
+
+Dann gilt:
+\begin{itemize}
+    \item
+        Liegen alle Eigenwerte links der Imaginärachse, dann ist die RL asymptotisch stabil
+    \item
+        Liegt mindestens einer der Eigenwerte rechts der Imaginärachse, dann ist die
+        RL instabil
+    \item Liegt mindestens einer der Eigenwerte auf der Imaginärachse und die anderen
+        links, so hat man keine Stabilitätsausage (kritischer Fall)
+\end{itemize}
