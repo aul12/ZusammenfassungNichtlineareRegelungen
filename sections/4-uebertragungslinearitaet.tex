@@ -1,0 +1,43 @@
+\chapter{Übertragungs- und Zustandslinearität}
+\section{Ein-/Ausgangslinearität}
+Ein (Single-Input-Single-Output) System mit:
+\begin{eqnarray}
+    \dot{x} &=& f(x, u)\ x(0) =x_0 \in \mathbb{R}^n \\
+    y &=& h(x)
+\end{eqnarray}
+mit Eingangsgröße $u(t) \in \mathbb{R}$ und Ausgangsgröße $y(t) \in \mathbb{R}$ ist
+ein-/ausgangslinear (EA-Linear) bzw. übertragungslinear wenn seine 
+Ein-/Ausgangsdifferentialgleichung linear ist. D.h.
+\begin{equation}
+    y^{(m)} + a_{m-1} \cdot y^{(m-1)} + \cdots + a_0 y =
+    b_0 u + \cdots b_q \cdot u^{(q)}
+\end{equation}
+mit $m \leq n$ und $q < n$ (also ohne Durchgriff). Außerdem wird Zeitinvarianz
+vorausgesetzt ($a_k$ und $b_k$ sind konstant).
+
+Für MIMO-Systeme muss jeder Ausgang diese Bedingung erfüllen. Für $x_0 \neq 0$ verletzt
+das System die strenge Linearitätsanforderung wird jedoch ebenfalls oftmals als linear
+bezeichnet.
+
+\section{Eingangs-/Zustandslinearität}
+Ein dynamisches System
+\begin{equation}
+    \dot{x} = f(x, u)\ x_0 \in \mathbb{R}^n
+\end{equation}
+mit Eingangsgröße $u \in \mathbb{R}$ ist (eingangs-) zustandlinear wenn $f$ eine lineare
+Vektorfunktion ist, d.h. falls
+\begin{equation}
+    f(x, u) = A x + b u
+\end{equation}
+
+Im MIMO-Fall ist $b$ ein Matrix. Zustandslinearität ist keine Systemeigenschaft, da
+sie von der Wahl der Zustandsgrößen abhängt.
+
+\section{Zusammenhang zwischen Übertragungs und Zustandlinearität}
+Die beiden Eigenschaften sind unabhängig:
+\begin{itemize}
+    \item System mit nichtlinearem $y$ ist Zustandslinear aber nicht EA-Linear
+    \item System mit nicht messbarem, nichtlinearen Zustand ist EA-Linear
+        aber nicht Zustandslinear
+\end{itemize}
+
