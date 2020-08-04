@@ -64,3 +64,136 @@ einsetzten in Gleichung \ref{eq:u} liefert:
 
 Für $r<n$ existiert ein nichtbeobachtbares Teilsystem dessen Stabilität untersucht werden
 muss.
+
+\section{Byrnes-Isidori-Normalform}
+\subsection{Koordinatentransformation}
+Eine Abbildung $z = \phi(x): D \subset \mathbb{R}^n \to G \subset \mathbb{R}^n$ zwischen
+den Gebieten $D$ und $G$ ist eine lokale Koordinatentransformation (Diffeomorphismus),
+wenn:
+\begin{itemize}
+    \item
+        $\phi(x)$ in $U(x_0)$ invertierbar ist, d.h. es existiert ein $\phi^{-1}(z)$ mit
+        $\phi^{-1}(\phi(x)) = x\ \forall x \in U(x_0) \subset D$.
+    \item
+        $\phi(x)$ und $\phi^{-1}(z)$ müssen in $U(x_0)$ bzw. $U(\phi(x_0))$ glatt
+        sein. 
+\end{itemize}
+
+\subsection{Implizites Funktionentheorem}
+$\phi(x)$ sei eine in $U(x_0)$ $k$-fach stetig differenzierbare Funktion, also
+$\phi \in C^k(U(x_0))$, dann gilt auch $\phi^{-1} \in C^k(U(\phi(x_0)))$ falls
+\begin{equation}
+    \det \frac{\partial \phi}{\partial x}(x_0) \neq 0
+\end{equation}
+
+\subsection{Bestimmung der Koordinatentransformation}
+\begin{enumerate}
+    \item
+        $r$ Koordinaten für $\xi$ Teil bestimmen (in $U(x_0)$):
+        \begin{eqnarray}
+            \xi_1 &=& y = h(x) \\
+            \xi_2 &=& \dot{y} = L_f h(x) \\
+            &\vdots& \\
+            \xi_r &=& y^{(r-1)} = L_f^{r-1} h(x)
+        \end{eqnarray} 
+        die Transformation wird mit $\phi_\xi$ bezeichnet.
+    \item
+        $n-r$ Koordinaten für $\eta$ Teil bestimmen (interne Dynamik) mit
+        $\eta = {(\eta_1, \cdots \eta_{n-r})}^\text{T} = \phi_\eta(x)$ und der
+        Gesamttransformation $\phi(x) = {(\phi_\xi(x), \phi_\eta(x))}^\text{T}$
+        muss gelten:
+        \begin{equation}
+            \det \frac{\partial \phi}{\partial x}(x_0) \neq 0
+        \end{equation}
+\end{enumerate}
+
+\subsection{Transformation des Systems}
+$\xi$-Teilsystem (vgl. Regelungsnormalform):
+\begin{eqnarray}
+    \dot{\xi}_1 &=& \dot{y} = \xi_2 \\
+    \dot{\xi}_2 &=& \ddot{y} = \xi_3 \\
+        &\vdots& \\
+    \dot{\xi}_{r-1} &=& \xi_r \\
+    \dot{\xi}_r &=& L_f^r h \circ \phi^{-1}(\xi, \eta) + L_g L_f^{r-1} h \circ \phi^{-1}(\xi, \eta) u \\
+        &=& a(\xi, \eta) + b(\xi, \eta) u
+\end{eqnarray}
+
+$\eta$-Teilsystem:
+\begin{eqnarray}
+    \dot{\eta} &=& \frac{\partial \phi_\eta(x)}{\partial x} \dot{x} \\
+        &=& \frac{\partial \phi_\eta(x)}{\partial x} f \circ \phi^{-1}(\xi, \eta) +
+        \frac{\partial \phi_\eta(x)}{\partial x} g \circ \phi^{-1}(\xi, \eta) u \\
+        &=& q(\xi, \eta) + p(\xi, \eta) u
+\end{eqnarray}
+
+Ausgang:
+\begin{equation}
+    y = \xi_1
+\end{equation}
+
+\section{Nulldynamik}
+\subsection{Stabilitätsuntersuchung des $\eta$-Teilsystems}
+\subsubsection{Fall $r=n$}
+Für $r=n$ existiert keine interne Dynamik, die Ruhelage $x_0$ kann immer durch EA-Linearisierung stabilisiert werden.
+
+Das System wird durch das Stellgesetz in $U(x_0)$ EA und Zustandslinearisiert (totale Linearisierung).
+
+\subsubsection{Fall $r < n$}
+Ansatz: Methode der ersten Näherung (problematisch im kritischen Fall). Außerdem kann
+die Ruhelage auch in $(\xi, \eta)$-Koordinaten in den Ursprung transformiert werden.
+
+Das (geregelte) $\xi$-Teilsystem ist gegeben durch:
+\begin{equation}
+    \dot{\xi} = J \xi + e_r (a(\xi, \eta) + b(\xi, \eta) u)
+\end{equation}
+mit
+\begin{equation}
+    J =
+    \begin{pmatrix}
+        0 & 1 & \cdots & 0 \\
+        \vdots & & \ddots & \\
+        0 & \cdots & 0 & 1 \\
+        0 & \cdots & 0 & 0
+    \end{pmatrix}
+\end{equation}
+und (durch Regler):
+\begin{equation}
+    a(\xi, \eta) + b(\xi, \eta) u = - \tilde{a}_{r-1} \xi_r - \cdots - \tilde{a}_0 \xi_1
+\end{equation}
+
+Das (geregelte) $\eta$-Teilsystem ist gegeben durch:
+\begin{equation}
+    \dot{\eta} = q(\xi, \eta) + p(\xi, \eta) 
+    \frac{-a(\xi, \eta) - \tilde{a}_{r-1} \xi_r - \cdots - \tilde{a}_0 \xi_1}{b(\xi, \eta)}
+    = \tilde{q}(\xi, \eta)
+\end{equation}
+
+Für das Gesamtsystem folgt mit dem Satz von Taylor (und der Ruhelage):
+\begin{equation}
+    \begin{pmatrix} \dot{\xi} \\ \dot{\eta} \end{pmatrix} =
+    \begin{pmatrix} \tilde{J} & 0 \\ P & Q \end{pmatrix}
+    \begin{pmatrix} \xi \\ \eta \end{pmatrix}
+\end{equation}
+Wobei $\tilde{J}$ eine Regelungsnormalformmatrix mit $\tilde{a}_k$ ist.
+
+Die Stabilität hängt rein von den Eigenwerten der $Q$ Matrix und der Regelung ab.
+
+\subsection{Definition Nulldynamik}
+Die für $y(t) \equiv 0$ noch im System vorhandene Dynamik wird Nulldynamik genannt
+und kann durch:
+\begin{equation}
+    \dot{\eta} = \tilde{q}(0, \eta)\ \ \eta(0) = \eta_0 \in \mathbb{R}^{n-r}
+\end{equation}
+bestimmt werden.
+
+\subsection{Starke Übertragungsblockierung}
+Die Eigenschwingungen der Nulldynamik sind die einzigen Signale, die stark Übertragungsblockiert werden können.
+
+\subsection{Stabilität der EA-linearisierten Regelung}
+Exakt EA-linearisierte Regelung hat asymptotisch stabile Ruhelage $x_0 = 0$, wenn die
+Ruhelage $\eta_0 = 0$ der Nulldynamik asymptotisch stabil ist und $\tilde{J}$ eine Hurwitz-Matrix
+ist.
+
+\subsection{Minimalphasig nichtlineare Systeme}
+Ein nichtlineares System heißt minimalphasig bei $x_0$ wenn seine Nulldynamik dort eine
+asymptotisch stabile Ruhelage besitzt.
