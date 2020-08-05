@@ -197,3 +197,112 @@ ist.
 \subsection{Minimalphasig nichtlineare Systeme}
 Ein nichtlineares System heißt minimalphasig bei $x_0$ wenn seine Nulldynamik dort eine
 asymptotisch stabile Ruhelage besitzt.
+
+\section{Frobenius-Theorem}
+\subsection{Distributionen}
+Betrachte $k$ glatte Vektorfelder $f_1(x), \ldots f_k(x) \in \mathbb{R}^n$ mit 
+$x \in U \subset \mathbb{R}^n$ einer offenen Umgebung. Dann wird durch
+\begin{equation}
+    \Delta(x) = \text{span}\{f_1(x), \ldots f_k(x)\}
+\end{equation}
+Punktweise ein Unterraum definiert. Diese Abbildung wird Distribution genannt.
+
+\subsubsection{Reguläre Distributionen}
+Eine reguläre Distributionn hat konstante Dimension in einer Umgebung von $x_0$.
+
+\subsection{Frobenius-Theorem}
+Eine reguläre Distribution $\Delta$ in $U$ ist genau dann vollständig integrierbar, wenn
+sie involutiv ist.
+
+\subsection{Involutitivtät einer Distribution}
+Bei involutiven Distributionen führt die Lie-Klammer-Bildung punktweise zu keinen neuen
+linear unabhängigen Vektoren.
+
+\subsubsection{Lie-Klammern}
+Es gilt:
+\begin{equation}
+    [\tau_1(x), \tau_2(x)] = \frac{\partial \tau_2(x)}{\partial x} \tau_1(x) - \frac{\partial \tau_1(x)}{\partial x} \tau_2(x)
+\end{equation}
+
+\subsubsection{Kriterium}
+\begin{equation}
+    \rank(f_1(x), \ldots, f_d(x), [f_i(x), \ldots, f_j(x)]) = d\ \ \forall x \in U, i, j \in \{1, \ldots, d\}
+\end{equation}
+
+\section{Eingangsnormalisierende Byrnes-Isidori-Normalform}
+Die interne Dynamik
+\begin{equation}
+    \dot{\eta} = q(\xi, \eta) + p(\xi, \eta) u
+\end{equation}
+soll nicht direkt vom Eingang abhängen, also $p(\xi, \eta) \equiv 0$.
+
+Das heißt:
+\begin{equation}
+    \frac{\partial \phi_\eta(x)}{\partial x}g(x) \stackrel{!}{=} 0
+\end{equation}
+
+da $\Delta = \text{span}(g)$ Dimension $1$ hat ist Distribution involutiv. D.h. solch
+ein $\phi_\eta$ existiert.
+
+\section{Steuerungsentwurf mittels Byrnes-Isidori-Normalform}
+\subsection{Inverses System für $r<n$}
+Interne Dynamik (muss in $S^{-1}$) mit bestimmt werden, z.B. über numerische Integration,
+dafür stabil $\Leftrightarrow$ Minimalphasig):
+\begin{equation}
+    \dot{\eta}_s = q(y_s(t), \ldots, y_s^{(r-1)}(t), \eta_s(t))
+\end{equation}
+mit $\eta_s(0) = \eta_{s,0} \in \mathbb{R}^{n-r}$.
+
+Stellsignal:
+\begin{eqnarray}
+    u_s(t) &=& \psi_y(y_s(t), \dot{y}_s(t), \ldots, y_s^{(r)}(t), \eta_s(t)) \\
+        &=& \frac{1}{b(\xi_s, \eta_s)} (-a(\xi_s, \eta_s) + y_s^{(r)})
+\end{eqnarray}
+
+\subsection{Inverses System für $r=n$}
+Keine interne Dynamik (flaches System, keine DGL):
+\begin{eqnarray}
+    u_s(t) &=& \psi_y(y_s(t), \dot{y}_s(t), \ldots, y_s^{(r)}(t)) \\
+        &=& \frac{1}{b(\xi_s)} (-a(\xi_s) + y_s^{(r)})
+\end{eqnarray}
+
+entsprechend kann auch die Zustandstrajektorie bestimmt werden:
+\begin{equation}
+    x_s = \psi^{-1}(\xi_s) = \psi_x(y_s, \ldots, y_s^{(n-1)}
+\end{equation}
+
+\section{Ausgangsfolgeregelung}
+Probleme:
+\begin{itemize}
+    \item Inkonsistente Anfangsbedingung
+    \item Externe Dauerstörung und Modellunbestimmtheit
+\end{itemize}
+Ausgangsfolgefehler $e=y-y_s$ muss ausgeregelt werden.
+
+\subsection{Exakte Linearisierung der Fehlerdynamik}
+Exakte Linearisierung:
+\begin{equation}
+    u = \frac{1}{L_g L_f^{r-1} h(x)} (-L_f^r h(x) + \bar{u})
+\end{equation}
+und der Vorsteuerung mit Regler:
+\begin{equation}
+    \bar{u} = y_s^{r}\ - \tilde{a}_{r-1} e^{r-1} - \cdots - \tilde{a}_0 e
+\end{equation}
+
+\subsection{Lineare Regelung der Fehlerdynamik}
+Idee: Nichtlineare Vorsteuerung mit (einfachem) linearen Regler.
+
+\subsubsection{Vorsteuerung}
+Problem: für $S^{-1}$ wird $\phi^{-1}$ benötigt, kann aber im Allgemeinen nicht bestimmt werden.
+
+Lösung: nichtlineare Modellgestütze Vorsteuerung.
+
+Für Stellsignal wird zweites System durch exakte Linearisierung gesteuert, dadurch generiertes Steuersignal wird
+für Hauptssystem genutzt.
+
+\subsection{Führungsgrößenglättung}
+Es wird ein lineares (und stationär genaues) Filter $r$-Ordnung benötigt um eine 
+beliebige Führungsgröße zu glätten damit hinreichend oft stetig differentierbar.
+
+Damit folgt Regelgröße $y$ der Führungsgröße $w$ jedoch nur asymptotisch.
+
