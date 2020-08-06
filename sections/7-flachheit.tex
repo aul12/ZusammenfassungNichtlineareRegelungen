@@ -1,0 +1,51 @@
+\chapter{Flachheitsbasierte Folgeregelung}
+\section{Definition flacher Systeme}
+Ein nichtlineares Mehrgrößensystem $n$-ter Ordnung:
+\begin{equation}
+    \dot{x} = f(x,u)
+\end{equation}
+mit $\rank\left(\frac{\partial f(x,u)}{\partial u}\right) = p\ \forall x \in U(x_0), \forall
+u \in U(u_0)$ d.h. mit $p$ Eingangsgrößen heißt flach, falls es einen fiktiven
+Ausgang $y_f = {(y_{f,1}, \ldots, y_{f,p})}^\text{T}$ gibt für den gilt:
+\begin{itemize}
+    \item
+        Alle Komponenten $y_{f,i}$ ($i \in \{1, \ldots, p\}$) des fiktiven Ausgangs
+        lassen sich als Funktion der Zustandsgrößen $x_\nu$ ($\nu \in \{1, \ldots, n\}$)
+        und $u_i$ ($i \in \{1, \ldots, p\}$) sowie einer endlichen Zahl von Zeitableitungen
+        $u_i^{(k_i)}$ ($k_i \in \{1, \ldots, \alpha_i\}$) ausdrücken, also:        
+        \begin{eqnarray}
+            y_f &=& \psi(x, u_1, \dot{u}_1, \ldots, u_1^{(\alpha_1)}, \ldots
+                u_p, \dot{u}_p, \ldots, u_p^{(\alpha_p)}) \\
+                &=& \psi(x, u, \dot{u}, \ldots, u^{(\alpha)})
+        \end{eqnarray}
+        mit den Ableitungstupel:
+        \begin{equation}
+            u^{(k)} = (u_1^{(k)}, \ldots, u_p^{(k)}
+        \end{equation}
+    \item  
+        Die Zustandsgrößen $x_\nu$ ($\nu \in \{1, \ldots, n\}$) und die Eingangsgrößen
+        $u_i$ ($i \in \{1, \ldots, p\}$) lassen sich als Funktionen von $y_{f,i}$
+        ($i \in \{1, \ldots, p\}$) und einer endlichen Anzahl von deren Zeitableitungen
+        $y_{f,i}^{(k_i)}$ ($k_i \in \{1, \ldots, \kappa_i\}$) darstellen, also:
+        \begin{eqnarray}
+            x &=& \psi_x (y_{f,1}, \ldots, y_{f,1}^{(\kappa_1 - 1)}, \ldots,
+                y_{f, p}, \ldots, y_{f, p}^{(\kappa_p -1)}) \\
+                &=& \psi_x(y_f, \ldots, y_f^{(\kappa-1)}) \\
+            u &=& \psi_u (y_{f,1}, \ldots, y_{f,1}^{(\kappa_1)}, \ldots,
+                y_{f, p}, \ldots, y_{f, p}^{(\kappa_p)}) \\
+                &=& \psi_u(y_f, \ldots, y_f^{(\kappa)})
+        \end{eqnarray} 
+    \item Die Komponenten von $y_f$ sind differentiell unabhängig, d.h. sie erfüllen keine
+        Differentialgleichung der Form $\phi(y_f, \ldots, y_f^{(\gamma)}) = 0$.
+\end{itemize}
+
+\section{Flachheitsbasierter Steuerungsentwurf}
+Problem: Bestimmung einer Solltrajektorie $x_s$ und einer Steuerung $u_s$ für einen
+Arbeitspunktwechsel (2-Punkt-Randwertproblem).
+
+Für flaches System:
+\begin{itemize}
+    \item $y_f(0)$ und $y_f(T)$ über $\psi)$ bestimmen
+    \item Trajektorienplanung in $y_f$-Koordinaten
+    \item Zustandsverlauf und Steuerungsverlauf mit $\psi_x$ und $\psi_u$ bestimmen
+    \item Steuerung in $x$-Koordinaten mit $u$
