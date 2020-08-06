@@ -1,0 +1,132 @@
+\chapter{Exakte Zustandslinearisierung}
+\section{Transformation auch nichtlineare Regelungsnormalform}
+Ansatz: Bestimmung eines fiktiven Ausgangs $y_f$ ohne Nulldynamik, d.h. $r_f = n$ zur
+exakten Zustandslinearisierung.
+
+\subsection{Zusammenhang zwischen Lie-Ableitungen und Lie-Klammern}
+Es gilt:
+\begin{equation}
+    L_{ad_f g(x)} h(x) = L_f L_g h(x) - L_g L_f h(x)
+\end{equation}
+mit
+\begin{equation}
+    ad_f g(x) = [f(x), g(x)]
+\end{equation}
+und
+\begin{equation}
+    ad_f^k g(x) = ad_f (ad_f^{k-1} g(x))
+\end{equation}
+sowie
+\begin{equation}
+    ad_f^0 g(x) = g(x)
+\end{equation}
+
+\subsection{Anforderungen an den Ausgang}
+Es muss gelten:
+\begin{eqnarray}
+    L_g h_f(x) &=& 0 \\
+    L_{ad_f g} h_f(x) &=& 0 \\
+    L_{ad_f^{n-2} g} h_f(x) &=& 0
+\end{eqnarray}
+Formuliert als Frobenius-PDgl.:
+\begin{equation}
+    \frac{\partial h_f(x)}{\partial x} \left(g(x), ad_f g(x), \ldots, ad_f^{n-2} g(x)\right) = 0
+\end{equation}
+
+Außerdem soll gelten:
+\begin{equation}
+    L_{ad_f^{n-1} g} h_f(x) = {(-1)}^{n-1} b(x)
+\end{equation}
+
+\subsection{Existenz der Lösung}
+Die Lösung existiert genau dann falls:
+\begin{enumerate}
+    \item 
+        $\Delta = \text{span}(g, ad_f g, \ldots, ad_f^{n-2} g)$ reguläre Distribution
+        bei $x_0$ mit $\dim(\Delta(x)) = n-1$ in $U(x_0)$.
+
+        Bzw. da $b(x)$ nicht verschwinden soll:
+        \begin{equation}
+            \det(g(x_0), ad_f g(x_0), \ldots, ad_f^{n-2} g(x_0), ad_f^{n-1} g(x_0)) \neq 0
+        \end{equation}
+        äquivalent dazu ($A, b$ aus Jakobi-Linearisierung):
+        \begin{equation}
+            \det(b, Ab, \ldots, A^{n-1} b) \neq 0
+        \end{equation}
+    \item
+        $\Delta$ muss involutiv sein, d.h 
+        \begin{equation}
+            [ad_f^i g(x), ad_f^j g(x)
+                = \sum_{k=0}^{n-2} \alpha_k^{ij} (x) ad_f^k g(x)
+        \end{equation}
+        mit $\alpha_k^{ij} \in C^\infty (U(x_0))$ und $i, j \in \{0, \ldots, n-2\}$
+\end{enumerate}
+
+\subsection{Zusammenhang Steuerbarkeit und exakte Zustandslinearisierung}
+Es gilt: 
+
+$\exists y_f \text{ mit } r_f = n \text{ bei } x_0 \Leftrightarrow$
+
+exakte Zustandslinearisierbarkeit in steuerbares, lineares System durch statische 
+Zustandsrückführung
+
+\section{Stabilisierung mittels nichtlinearer Ackermann-Formel}
+\begin{enumerate}
+    \item
+        Überprüfen auf exakte Zustandslinearisierung ($\Leftrightarrow$
+        fiktiver Ausgang $y_f$ mit $r=n$ finden.
+    \item
+        Transformation auf nichtlineare Regelungsnormalform:
+        \begin{eqnarray}
+            \dot{z}_1 &=& z_2 \\
+            \dot{z}_{n-1} &=& z_n \\
+            \dot{z}_n &=& L_f^n h_f(x) + L_g L_f^{n-1} h_f(x)
+        \end{eqnarray}
+    \item
+        Kompensation der nichtlinearitäten:
+        \begin{equation}
+            u = \frac{1}{L_g L_f^{n-1}} (-L_f^n h_f(x) + \bar{u})
+        \end{equation}
+    \item
+        Stabilisierung durch Eigenwertvorgaben in Brunovsky-Normalform.
+        
+        Lineare Zustandsrückführung:
+        \begin{equation}
+            \bar{u} = -\tilde{a}_{n-1} z_n - \ldots - \tilde{a}_1 z_2 - \tilde{a}_0 z_1
+        \end{equation}
+
+        Führt auf geregeltes System:
+        \begin{equation}
+            \dot{z} = \tilde{A} z
+        \end{equation}
+
+        mit:
+        \begin{equation}
+            \tilde{A} =
+                \begin{pmatrix}
+                    0 & 1 & 0 & \cdots & 0 \\
+                    0 & 0 & 1 & \cdots & 0 \\
+                    \vdots & & & \ddots & 1 \\
+                    -\tilde{a}_0 & & \cdots & & -\tilde{a}_{n-1}
+                \end{pmatrix}
+        \end{equation}
+
+        Stabilitätsüberprüfung über EW/Hurwitz-Kriterium.
+    \item
+        Regler in Originalkoordinaten:
+        \begin{equation}
+            u = \frac{1}{L_g L_f^{n-1}} (-L_f^n h_f(x) 
+            - \tilde{a}_{n-1} L_f^{n-1} h_f(x) - \cdots - \tilde{a}_1 L_f h_f(x)
+            - \tilde{a}_0 h_f(x))
+        \end{equation}
+\end{enumerate}
+
+Bemerkungen:
+\begin{itemize}
+    \item
+        Einzugsbereich meist größer als bei Jakobi-Linearisierung
+    \item
+        Falls $\phi$ global, dann ist Ruhelage global asymptotisch stabil.
+    \item 
+        Dynamik in $x$-Koordinaten nicht linear!
+\end{itemize}
