@@ -49,3 +49,233 @@ Für flaches System:
     \item Trajektorienplanung in $y_f$-Koordinaten
     \item Zustandsverlauf und Steuerungsverlauf mit $\psi_x$ und $\psi_u$ bestimmen
     \item Steuerung in $x$-Koordinaten mit $u$
+\end{itemize}
+
+\section{Flachheitsbasierter statischer und dynamischer Folgeregler}
+\subsection{Transformation auf Brunovsky-Normalform}
+\begin{enumerate}
+    \item
+        \textbf{Bestimmung von $\psi_{\bar{u}}$:}
+
+        Regelung ist zustandslinear, falls:
+        \begin{equation}
+            y_{f,i}^{(\kappa_i)} = \bar{u}_i\ \ \forall i \in \{1, \ldots, p\}
+        \end{equation}
+
+        Differentielle Parametrierung:
+        \begin{equation}
+            \psi_{\bar{u}}(y_f^{(\kappa)}) = y_f^{(\kappa)} = \bar{u} 
+        \end{equation}
+    \item
+        \textbf{Bestimmung von $\psi_\xi$:}
+
+        Betrachte inverse Koordinatentransformation der Regelung:
+        \begin{equation}
+            \begin{pmatrix} x \\ \xi \end{pmatrix} =
+            \begin{pmatrix} \psi_x(z) \\ \psi_\xi(z) \end{pmatrix} =
+            \phi^{-1}(z)        
+        \end{equation}
+
+        Es muss gelten:
+        \begin{equation}
+            \det \frac{\partial \phi^{-1}}{\partial x}(x_0) \neq 0
+        \end{equation}
+        $\rightarrow \psi_\xi(z)$ entsprechend bestimmen das erfüllt.
+    \item
+        \textbf{Bestimmung der Reglerdifferentialgleichung:}
+
+        \begin{eqnarray}
+            \dot{\xi} &=& \frac{\partial \psi_\xi(z)}{\partial z} \dot{z} \\
+                &=& \bar{a}(z, \bar{u}) \\
+                &=& \bar{a}(\psi(x, \xi), \bar{u}) \\
+                &=& a(x, \xi, \bar{u})
+        \end{eqnarray}
+        
+        Problem: Bestimmung von $\psi(x, \xi)$ durch Inversion von $\psi^{-1}(z)$.
+    
+        \begin{eqnarray}
+            z &=& {(y_{f,1}, \ldots, y_{f,1}^{(\kappa_1 - 1)}, \ldots, y_{f,p}, \ldots,
+                    y_{f,p}^{(\kappa_p - 1)})}^\text{T} \\
+              &=& \bar{\phi}(x, u, \dot{u}, \ldots, u^{(\mu)})
+        \end{eqnarray}
+        mit $\mu_i \geq \alpha_i$ ($i \in \{1, \ldots, p\}$).
+
+        Einsetzten in differentielle Parametrierung des Reglerzustandes:
+        \begin{equation}
+            \xi = \psi_\xi \circ \bar{\phi}(x, u, \dot{u}, \ldots, u^{(\mu)})
+                = \tilde{\phi}(x, u, \dot{u}, \ldots, u^{(\mu)})
+        \end{equation}
+
+        Auflösen nach $u$ und dessen Zeitableitungen (meist einfacher als
+        ${(\phi^{-1})}^{-1}$ direkt zu berechnen):
+        \begin{equation}
+            (u, \dot{u}, \ldots, u^{(\mu)}) = \tilde{\psi}^{-1}(x, \xi)
+        \end{equation}
+
+        Einsetzten in $\bar{\psi}$:
+        \begin{equation}
+            \psi(x, \xi) = \bar{\psi}(x, \tilde{\psi}^{-1}(x, \xi))
+        \end{equation}
+    \item 
+        \textbf{Bestimmung der Reglerausgangsgleichung:}
+
+        Einsetzten von $y_f^{(\kappa)} = \bar{u}$ in $\psi_u$ führt zu:
+        \begin{equation}
+            u = \psi_u(z, \bar{u}) = \psi_u(\psi(x, \xi), \bar{u}) = b(x, \xi, \bar{u}) 
+        \end{equation}
+\end{enumerate}
+
+\subsection{Folgereglerentwurf in den Brunovsky-Koordinaten}
+Die Regler für die Fehlerdynamiken der einzelnen Ausgänge können einzeln über Polvorgabe
+entworfen werden.
+
+\section{Nichtlineare Folgebeobachter}
+\subsection{Ansatz}
+Simulationsterm und Korrekturterm:
+\begin{equation}
+    \dot{\hat{x}} = f(\hat{x}, u) + L(t) (y- h(\hat{x}) 
+\end{equation}
+mit $\hat{x}(0) = \hat{x}_0 \in \mathbb{R}^n$.
+
+Bestimmung von $L(t)$ mittels Jacobi-Linearisierung der Fehlerdifferentialgleichung 
+entlang der Solltrajektorie $x_s(t)$ für $u_s(t)$.
+
+Satz von Taylor:
+\begin{eqnarray}
+    f(x,u) &\approx& f(x_s, u_s) + \frac{\partial f}{\partial x}(x_s, u_s) (x -x_s)
+                + \frac{\partial f}{\partial u}(u-u_s) \\
+            &=& \dot{x}_s(t) + A(t) \Delta x + B(t) \Delta u \\
+    f(\hat{x}, u) &\approx& \dot{x}_s(t) + A(t) \Delta \hat{x} + B(t) \Delta u \\
+    h(x) &\approx& h(x_s) + \frac{\partial h}{\partial x}(x_s) (x-x_s) \\
+            &=& y_s(t) + C(t) \Delta x \\
+    h(\hat{x}) &=& y_s(t) + C(t) \Delta \hat{x}
+\end{eqnarray}
+
+Einsetzten in die Fehlerdifferentialgleichung liefert:
+\begin{equation}
+    \Delta \dot{x} - \Delta \dot{\hat{x}} \approx
+        (A(t) - L(t) C(t)) (\Delta x - \Delta \hat{x})
+\end{equation}
+
+$\Rightarrow (C(t), A(t))$ muss beobachtbar sein, hängt von der Solltrajektorie ab.
+
+\subsubsection{$M_A$-Operator}
+Es gilt:
+\begin{equation}
+    M_A c^\text{T} (t) = c^\text{T} (t) A(t) + \dot{c}^\text{T} (t)
+\end{equation}
+
+\subsubsection{$N_A$-Operator}
+Es gilt:
+\begin{equation}
+    N_A s^1(t) = A(t) s^1(t) - \dot{s}^1(t)
+\end{equation}
+
+\subsubsection{Beobachtbarkeit}
+Zeitvariante Beobachtbarkeitsmatrix:
+\begin{equation}
+    Q_B(t) =
+    \begin{pmatrix}
+        c^\text{T}(t) \\ M_A c^\text{T}(t) \\ \vdots \\ M_A^{n-1} c^\text{T} (t)
+    \end{pmatrix}
+\end{equation}
+Falls $\det Q_B(t) \neq 0\ \forall t \in [0, T]$ dann ist das System $(c^\text{T}, A(t)$
+gleichmäßig beobachtbar für alle $t \in [0, T]$.
+
+\subsection{Zeitvariante Ackermann-Formel}
+\begin{enumerate}
+    \item
+        Festlegung des Eigenwertvorgabepolynoms $\tilde{\bar{N}}(s)$:
+        \begin{equation}
+            \tilde{\bar{N}}(s) = \prod_{i=1}^n (s-\lambda_{B,i})
+                = s^n + \tilde{\bar{a}}_{n-1} s^{n-1} + \cdots + \tilde{\bar{a}}_1 s +
+                    \tilde{\bar{a}}_0
+        \end{equation}
+    \item
+        Bestimmung des Startvektors $s^1(t)$:
+        \begin{equation}
+            s^1(t) = Q_B^{-1} (t) e_n \bar{c}_n (t)\ \ \bar{c}_n(t) \neq 0, t \geq t_0
+        \end{equation}
+    \item Zeitvariante Ackermann-Formel:
+        \begin{equation}
+            T^{-1}(t) = \begin{pmatrix}
+                s^1(t) & N_A s^1(t) & \cdots & N_A^{n-1} s^1(t)
+            \end{pmatrix}
+        \end{equation}
+        
+        Es gilt:
+        \begin{equation}
+            l(t) = \frac{1}{\bar{c}_n(t)} (N_A^n s^1(t) + 
+                \tilde{\bar{a}}_{n-1} N_A^{n-1} s^1(t) + \cdots +
+                \tilde{\bar{a}}_1 N_A s^1(t) + \tilde{\bar{a}}_0 s^1(t)
+        \end{equation}
+\end{enumerate}
+
+
+\subsubsection{Lyapunov-Transformation}
+Eine lineare, zeitvariante Transformation $z=T(t) x$ mit $\norm{T(t)} < c_1, c_1 > 0$ und
+$\norm{T^1(t)} < c_2, c_2 > 0, t \geq t_0 \geq 0$ heißt Lyapunov Transformation.
+
+Exponentielle Stabilität wird durch eine Lyapunov-Transformation erhalten.
+
+\subsection{Nichtlineare Mehrgrößen-Folgebeobachter}
+Annahme: Beobachtbarkeitsindizes $\mu_i$ ($i \in \{1, \ldots, m\}$) seien bekannt
+und zeitinvariant.
+
+\begin{enumerate}
+    \item
+        Beobachtbarkeitsanalyse:
+        \begin{equation}
+            \tilde{Q}_B (t) =
+                \begin{pmatrix}
+                    c_1^\text{T}(t) \\
+                    \vdots
+                    M_A^{\mu_1 -1} c_1^\text{T}(t)
+                    \vdots
+                    c_m^\text{T}(t) \\
+                    \vdots
+                    M_A^{\mu_m -1} c_m^\text{T}(t)
+                \end{pmatrix}
+        \end{equation}
+        mit $c_i^\text{T}$ Zeilen von $C(t)$. 
+        Für Beobachtbarkeit muss $\det \tilde{Q}_B (t) \neq 0\ \forall t \in [0, T]$.
+    \item
+        Festlegung des Eigenwertvorgabepolynoms $\tilde{\bar{N}}(\lambda)$:
+        \begin{equation}
+            \tilde{\bar{N}}(\lambda) = \prod_{i=1}^m \prod_{j=1}^{\mu_i}
+            (\lambda - \lambda^i_{B,j}) =
+            \prod_{i=1}^m (\lambda^{\mu_i} + \gamma_{\mu_i -1}^i \lambda^{\mu_i-1}
+            + \cdots + \gamma_1^i \lambda + \gamma_0^i)
+        \end{equation}
+    \item
+        Bestimmung der Startvektoren:
+        \begin{equation}
+            \begin{pmatrix}
+                s^1(t)& s^2(t)& \ldots& s^m(t)
+            \end{pmatrix} =
+            \tilde{Q}_B^{-1} (t) {(C^*(t))}^\text{T}
+        \end{equation} 
+        mit ($c_j^{i*}(t)$ beliebig):
+        \begin{equation}
+            C^*(t) = \begin{pmatrix}
+                0 & \cdots & c_1^{1*}(t) & \cdots & 0 & \cdots & c_1^{m*}(t) \\
+                \vdots & \ddots & \vdots & \ddots & \vdots & \ddots & \vdots \\
+                0 & \cdots & c_m^{1*}(t) & \cdots & 0 & \cdots & c_m^{m*}(t)
+            \end{pmatrix}
+        \end{equation}
+
+        dabei muss
+        \begin{equation}
+            0 \neq \det \bar{C}^* (t) = \det \begin{pmatrix}
+                c_1^{1*}(t) & \cdots & c_1^{m*}(t) \\
+                \vdots & \ddots & \vdots \\
+                c_m^{1*}(t) & \cdots & c_m^{m*}(t)
+            \end{pmatrix}
+        \end{equation}
+    \item Zeitvariante-Ackermann-Formel:
+        \begin{equation}
+            L(t) = \left( \sum_{k=1}^m \sum_{j=0}^{\mu_k -1}
+                \gamma_j^k N_A^j s^k(t) + N_A^{\mu_k -1} s^k(t) + \cdots \right) 
+                \bar{C}^{*-1}(t)
+        \end{equation}
+\end{enumerate}
