@@ -1,0 +1,168 @@
+\chapter{Lyapunov-Synthese nichtlinearer Regelungen}
+\section{Control-Lyapunov-Funktion (CLF)}
+\subsection{Definition}
+Eine radial unbeschränkte Lyapunov-Testfunktion $V(x)$ im ganzen Zustandsraum ist eine
+globale Control-Lyapunov-Funktion für das System $(f, g)$, wenn
+\begin{equation}
+    L_g V(x) = 0 \land x \neq 0 \Rightarrow L_f V(x) < 0
+\end{equation}
+
+\subsection{Sontags Formel}
+Sei $V(x)$ eine CLF für $(f, g)$. Dann ist ein global asymptotisch stabilisierendes
+Stellegesetz $u=-k(x)$ durch Sontags Formel gegeben:
+\begin{equation}
+    k(x) = \begin{cases}
+        \frac{L_f V(x) + \sqrt{ {(L_f V(x))}^2 + {(L_g V(x))}^4}}{L_g V(x)} & L_g V(x) \neq 0 \\
+        0 & \text{sonst}
+    \end{cases}
+\end{equation}
+
+\section{Backstepping}
+\subsection{Integrator-Backstepping}
+Sei eine CLF $V_1(x_1)$ für das skalare System $(f_1, g_1)$ bekannt, außerdem existiere
+eine stetig differentierbare Funktion $\alpha(x_1)$ mit $\alpha(0)=0$ und
+\begin{equation}
+    L_{f_1} V(x_1) + L_{g_1} V(x_1) \alpha(x_1) < 0\ \ x \neq 0
+\end{equation}
+Dann ist
+\begin{equation}
+    V(x) = V_1(x_1) + \frac{1}{2} (x_2 - \alpha(x_1))
+\end{equation}
+eine CLF für das Gesamtsystem $(f, g)$ und das Stellgesetz
+\begin{eqnarray}
+    u &=& \dot{\alpha}(x_1) - L_{g_1} V_1(x) - kz \\
+        &=& L_{f_1} \alpha(x_1) + L_{g_1} \alpha(x_1) x_2 - L_{g_1} V_1(x_1) - k(x_2 - \alpha(x_1))\ \ k \geq 0
+\end{eqnarray}
+stabilisiert die Ruhelage $x_R=0$ des Gesamtsystems asymptotisch stabil.
+
+\subsection{Rekursives Backstepping}
+Verallgemeinerung des Integrator-Backsteppings auf Strict-Feedback Systeme:
+\begin{enumerate}
+    \item
+        Annahme: CLF $V_1(x)$ für skalares System $(x_1, g_1)$ sei bekannt.
+        Außerdem sei $\alpha_1(x_1)$ ein stabilisierendes Stellgesetz für das
+        System.
+    \item
+        Erweiterung um skalares $x_2$-System und Backstepping für fiktives Stellgesetz:
+        \begin{eqnarray}
+            x_2 &=& \alpha_1(x_1) \\
+            \dot{x}_1 &=& f_1(x_1) + g_1(x_1) \alpha(x_1) + g_1(x_1) (x_2 - \alpha(x_1)) \\
+            \dot{z}_1 &=& \dot{x}_2 - \dot{\alpha}_1 (x_1) \\
+                      &=& f_2(x_1, x_2) + g_2(x_1, x_2)x_3 - \dot{\alpha}_1(x_1)
+        \end{eqnarray}
+    \item
+        CLF $V_2(x_1, x_2)$ für $(x_1, x_2)$ System mit fiktivem Eingang $x_3$:
+        \begin{equation}
+            V_2(x_1, x_2) = V_1(x_1) + \frac{1}{2} z_1^2
+        \end{equation}
+        Zeitliche Ableitungen auf den Lösungen des Systems:
+        \begin{eqnarray}
+            \dot{V}_2(x_1, x_2) &=& L_{f_1} V_1(x_1) + L_{g_1} V_1(x_1) \alpha_1(x_1) \\
+                && + z_1 (L_{g_1} V_1(x_1) + f_2(x_1, x_2) + g_2(x_1, x_2) x_3 - \dot{\alpha}_1(x_1)) \\
+                &=& \dot{V}_1(x_1) - k_1 z_1^2
+        \end{eqnarray}
+        Auflösen liefert das Stellgesetz:
+        \begin{equation}
+            x_3 = \frac{1}{g_2(x_1, x_2)} (-L_{g_1} V_1(x_1) - f_2(x_1, x_2) + \dot{\alpha}_1 (x_1) - k_1 z_1)
+        \end{equation} 
+    \item Rekursiv fortführen
+\end{enumerate}
+
+\section{Nichtlineare modellprädiktive Regelung (NMPC)}
+\subsection{Problemstellung}
+Gegeben ist das System $\dot{x} = f(x, u), t>0, x(0) = x_0 \in \mathbb{R}^n$ mit
+$f(0,0)=0$ Ruhelage des System und $u \in \mathbb{R}^p, 1\leq p < n$.
+
+Gesucht:
+\begin{itemize}
+    \item
+        Stellsignal $u$, so dass Ruhelage asymptotisch stabil ist.
+    \item
+        Stellsignalbeschränkung $U$ mit einer kompakten konvexen Menge 
+        $U \subset \mathbb{R}^p$, also:
+        \begin{equation}
+            u(t) \in U\ \forall t > 0
+        \end{equation}
+    \item
+        Zustandsbeschränkung $X$ mit einer konvexen Menge $X \subset \mathbb{R}^n$, also:
+        \begin{equation}
+            x(t) \in X\ \forall t > 0
+        \end{equation}
+\end{itemize}
+
+Ansatz: NMPC:
+\begin{itemize}
+    \item
+        Bewertung der Abweichung $\norm{x-x_R} = \norm{x}$ und des Stellaufwandes durch
+        stetig differentierbare, positiv definite Kostenfunktion $l(x,u)$ mit:
+        \begin{equation}
+            m (\norm{x}^2 + \norm{u}^2) \leq l(x,u) \leq M (\norm{x}^2 + \norm{u}^2)
+        \end{equation}
+        mit $m, M \in \mathbb{R}^+$.
+    \item
+        Online-Minimierung des Gütemaßes:
+        \begin{equation}
+            J_T = \int_0^T l(\bar{x}(\tau), \bar{u}(tau)) \text{d}\tau
+        \end{equation}
+        
+        über Prädiktionshorizont $T>0$ unter Beachtung von:
+        \begin{equation}    
+            \dot{\bar{x}} = f(\bar{x}(\tau), \bar{u}(\tau))
+        \end{equation}
+        mit $\tau \in (0, T]$ und $\bar{x}(0) = x(t)$ und den Stellsignal- und
+        Zustandsbeschränkungen.
+    \item
+        Aufschaltend des optimalen Stellverlaufs für den Steuerungshorizont $T_c$.
+\end{itemize}
+
+\subsection{NMPC mit unendlichem Horizont}
+Die Menge $\Gamma \subseteq X \subseteq \mathbb{R}^n$ aller Anfangsbedingungen $x(kT_C)$,
+für die das OCP:
+\begin{equation}
+    \min_{\bar{u}} = J_\infty(x(k T_C), \bar{u}) = \int_0^\infty l(\bar{x}(\tau), \bar{u}(\tau)) \text{d}\tau
+\end{equation}
+unter Beachtung von:
+\begin{eqnarray}
+    \dot{\bar{x}}(t) &=& f(\bar{x}(t), \bar{u}(t))\ \tau \in (0, \infty), \bar{x}(0)=x(k T_C) \\
+    &&\bar{x}(\tau) \in X, \bar{u}(\tau) \in U\ \forall \tau \in [0, \infty)
+\end{eqnarray}
+lösbar ist sei nicht leer. Dann ist die Ruhelage $x_R=0$ der Regelung attraktiv, d.h.
+$\lim_{t \to \infty} \norm{x(t)} = 0$. $\Gamma$ stellt den Einzugsbereich dar.
+
+\subsection{NMPC mit endlichem Horizont}
+Für die Anwendung können nur NMPC mit endlichem Horizont realisiert werden, diese sind
+jedoch im Allgemeinen instabil.
+
+Ansätze:
+\begin{itemize}
+    \item
+        Hinzufügen von Endbeschränkungen und Endkostengewichtung
+    \item
+        Zusätzliche Anforderungen an die Systemparameter und die Kostenfunktion
+    \item
+        Praxis: hinreichend langer Horizont
+\end{itemize}
+
+Das OPC: 
+\begin{equation}
+    \min_{\bar{u}} = J_T(x(k T_C), \bar{u}) = \int_0^T l(\bar{x}(\tau), \bar{u}(\tau)) \text{d}\tau
+\end{equation}
+unter Beachtung von:
+\begin{eqnarray}
+    \dot{\bar{x}}(t) &=& f(\bar{x}(t), \bar{u}(t))\ \tau \in (0, T], \bar{x}(0)=x(k T_C) \\
+    &&\bar{x}(\tau) \in X, \bar{u}(\tau) \in U\ \forall \tau \in [0, T]
+\end{eqnarray}
+
+sei für alle $x(k T_C) \in \mathbb{R}^n$ und $T \in [T_C, \infty)$ lösbar. Weiterhin
+gelte:
+\begin{itemize}
+    \item 
+        Das um die Ruhelage $x_R=0$ linearisierte System ist stabilisierbar.
+    \item
+        $J_T^* (x)$ ist stetig differenzierbar in $x$ für alle $T \in [T_C, \infty)$
+    \item
+        Das optimale Regelgesetz, aus dem das Stellsignal für $\tau \in [0, T_C]$ gebildet
+        wird ist lokal Lipschitz-stetig
+\end{itemize}
+Dann gibt es ein $T_\delta < \infty$ derart, dass für $T \geq T_\delta$ die Ruhelage der
+Regelung exponentiell stabil ist.
