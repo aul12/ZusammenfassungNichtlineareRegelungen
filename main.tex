@@ -65,7 +65,7 @@
     \tableofcontents
     \pagebreak
 
-    \input{sections/1-einfuehrung.tex}
+    \stepcounter{chapter} % No chapter 1
     \input{sections/2-zustandsbeschreibung.tex}
     \input{sections/3-stabilitaet.tex}
     \input{sections/4-uebertragungslinearitaet.tex}
@@ -75,5 +75,6 @@
     \input{sections/8-lyapunovsynthese.tex}
 
     \appendix
+    \input{appendix/operatoren.tex}
 \end{document}
 

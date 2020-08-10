@@ -1,0 +1,47 @@
+\chapter{Operatoren}
+\section{Lie-Ableitung}
+Es gilt:
+\begin{equation}
+    L_f^i h(x) = \frac{\partial L_f^{i-1} h(x)}{\partial x} f(x)
+\end{equation}
+außerdem gilt:
+\begin{equation}
+    L_f^0 h(x) = h(x)
+\end{equation}
+
+\section{Lie-Klammern}
+Es gilt:
+\begin{equation}
+    [\tau_1(x), \tau_2(x)] = \frac{\partial \tau_2(x)}{\partial x} \tau_1(x) - \frac{\partial \tau_1(x)}{\partial x} \tau_2(x)
+\end{equation}
+
+\section{Zusammenhang zwischen Lie-Ableitungen und Lie-Klammern}
+Es gilt:
+\begin{equation}
+    L_{ad_f g(x)} h(x) = L_f L_g h(x) - L_g L_f h(x)
+\end{equation}
+mit
+\begin{equation}
+    ad_f g(x) = [f(x), g(x)]
+\end{equation}
+und
+\begin{equation}
+    ad_f^k g(x) = ad_f (ad_f^{k-1} g(x))
+\end{equation}
+sowie
+\begin{equation}
+    ad_f^0 g(x) = g(x)
+\end{equation}
+
+\section{$M_A$-Operator}
+Es gilt:
+\begin{equation}
+    M_A c^\text{T} (t) = c^\text{T} (t) A(t) + \dot{c}^\text{T} (t)
+\end{equation}
+
+\section{$N_A$-Operator}
+Es gilt:
+\begin{equation}
+    N_A s^1(t) = A(t) s^1(t) - \dot{s}^1(t)
+\end{equation}
+
