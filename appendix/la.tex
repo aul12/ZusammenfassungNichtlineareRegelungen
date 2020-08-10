@@ -1,0 +1,112 @@
+\chapter{Lineare Algebra}
+\section{Matrixinverse}
+\subsection{$1 \times 1$}
+\begin{equation}
+    {\begin{pmatrix}
+        a_{11}
+    \end{pmatrix}}^{-1} =
+    \begin{pmatrix}
+        \frac{1}{a_{11}}
+    \end{pmatrix} 
+\end{equation}
+
+\subsection{$2 \times 2$}
+\begin{equation}
+    {\begin{pmatrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{pmatrix}}^{-1} =
+    \frac{1}{\det A}
+    \begin{pmatrix}
+        a_{22} & -a_{12} \\
+        -a_{21} & a_{11}
+    \end{pmatrix} 
+\end{equation}
+
+\subsection{Höhere Ordnung}
+\subsubsection{Gauß-Verfahren}
+Gleichungssystem:
+\begin{equation}
+    A \cdot A^{-1} = I
+\end{equation}
+mit Gaussverfahren lösen.
+
+\subsubsection{Über Adjunkte}
+Ansatz:
+\begin{equation}
+    A^{-1} = \frac{\text{adj} (A)}{\det (A)}
+\end{equation}
+
+\paragraph{Adjunkte bestimmen}
+\begin{enumerate}
+    \item
+        Zu jedem Eintrag den Minor berechnen:
+
+        Zeile und Spalte des Elements streichen und Determinante der Rest-Matrix.
+
+    \item
+        Das Vorzeichen jedes Minors wird durch ${(-1)}^{i+j}$ bestimmt
+
+    \item
+        Die Adjunkte ist die transponierte Matrix der Vorzeichenbehafteten Adjunkten
+\end{enumerate}
+
+\section{Determinante}
+\subsection{$1 \times 1$}
+\begin{equation}
+    \det \begin{pmatrix} a_{11} \end{pmatrix} = a_{11}
+\end{equation}
+
+\subsection{$2 \times 2$}
+\begin{equation}
+    \det
+        \begin{pmatrix}
+            a_{11} & a_{12} \\
+            a_{21} & a_{22}
+        \end{pmatrix}
+    = a_{11} \cdot a_{22} - a_{12} \cdot a_{21}
+\end{equation}
+
+\subsection{$3 \times 3$}
+\begin{equation}
+    \det
+        \begin{pmatrix}
+            a_{11} & a_{12} & a_{13}\\
+            a_{21} & a_{22} & a_{23} \\
+            a_{31} & a_{32} & a_{33}
+        \end{pmatrix}
+    = a_{11} a_{22} a_{33} + a_{12} a_{23} a_{21} + a_{13} a_{21} a_{22} -
+    a_{31} a_{22} a_{13} - a_{32} a_{23} a_{11} - a_{33} a_{21} a_{12}
+\end{equation}
+
+\subsection{Höhere Ordnung}
+\subsubsection{Entwicklungssatz von Laplace}
+Sei $A \in \mathbb{R}^{n \times n}$ und bezeichne $A_{ij}$ die $(n-1)\times(n-1)$ Matrix, die aus $A$ durch Streichen
+der $i$-ten Zeile und $j$-ten Spalte entsteht. Die Einträge von $A$ bezeichnen wir mit $A = (a_{ij})_{1 \leq i,j \leq n}$. Dann gilt:
+\begin{enumerate}[label= (\alph*)]
+    \item Für $j \in \{1, \ldots, n \}$ beliebig aber fest ist
+        \begin{equation*}
+            \det(A) = \sum_{i=1}^n a_{ij} \det{A_{ij}} {(-1)}^{i+j}
+        \end{equation*}
+    \item Für $i \in \{1, \ldots, n \}$ beliebig aber fest ist
+        \begin{equation*}
+            \det(A) = \sum_{j=1}^n a_{ij} \det{A_{ij}} {(-1)}^{i+j}
+        \end{equation*}
+\end{enumerate}
+
+\subsubsection{Leibniz-Formel für Determinanten}
+Sei $A \in \mathbb{R}^{n \times n}$ und bezeichne $S_n$ die Gruppe der Permutationen von
+$\{1, \ldots, n\}$ und sei $\text{sgn}(\sigma)$ definiert durch $\text{sgn}: S_n \to \{-1, 1\}$:
+\begin{equation*}
+    \text{sgn}{\sigma} = \begin{cases}
+        1 & \text{ falls $\sigma$ durch eine gerade Anzahl Permutationen entsteht} \\
+        -1 & \text{ sonst}
+    \end{cases}
+\end{equation*}
+wobei eine Transposition einer paarweisen Vertauschung entspricht.
+
+Dann gilt:
+\begin{equation*}
+    \det(A) = \det((a_{ij})_{1\leq  i,j \leq n}) = 
+    \sum_{\sigma \in S_n} \text{sgn}(\sigma) \prod_{k=1}^n a_{k\sigma(k)}
+\end{equation*}
